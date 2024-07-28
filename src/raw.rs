@@ -14,3 +14,12 @@ pub use archive_2_file::Archive2File;
 pub mod messages;
 
 mod util;
+
+use crate::raw::util::deserialize;
+use crate::result::Result;
+use std::io::Read;
+
+/// Decodes an Archive II header from the provided reader.
+pub fn decode_archive2_header<R: Read>(reader: &mut R) -> Result<Archive2Header> {
+    deserialize(reader)
+}

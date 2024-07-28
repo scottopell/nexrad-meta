@@ -20,5 +20,13 @@ mod message;
 pub use message::Message;
 
 mod volume_coverage_pattern;
-
 pub use volume_coverage_pattern::VolumeCoveragePatternNumber;
+
+use crate::raw::util::deserialize;
+use crate::result::Result;
+use std::io::Read;
+
+/// Decodes an RDA status message type 2 from the provided reader.
+pub fn decode_rda_status_message<R: Read>(reader: &mut R) -> Result<Message> {
+    deserialize(reader)
+}

@@ -11,3 +11,13 @@ pub use message_type::MessageType;
 
 mod message;
 pub use message::{Message, MessageWithHeader};
+
+use crate::raw::messages::message_header::MessageHeader;
+use crate::raw::util::deserialize;
+use crate::result::Result;
+use std::io::Read;
+
+/// Decodes a message header from the provided reader.
+pub fn decode_message_header<R: Read>(reader: &mut R) -> Result<MessageHeader> {
+    deserialize(reader)
+}
