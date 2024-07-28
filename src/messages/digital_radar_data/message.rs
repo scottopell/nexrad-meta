@@ -4,6 +4,7 @@ use crate::messages::digital_radar_data::{
 
 #[cfg(feature = "nexrad-model")]
 use nexrad_model::data::{Radial, RadialStatus};
+use nexrad_model::meta::Site;
 
 /// The digital radar data message includes base radar data from a single radial for various
 /// products.
@@ -59,6 +60,20 @@ impl Message {
             correlation_coefficient_data_block: None,
             specific_diff_phase_data_block: None,
         }
+    }
+
+    /// The radar site's metadata if included on this message.
+    #[cfg(feature = "nexrad-model")]
+    pub fn site_metadata(&self) -> Option<Site> {
+        self.volume_data_block.as_ref().map(|block| {
+            Site::new(
+                self.header.radar_identifier,
+                block.latitude,
+                block.longitude,
+                block.site_height,
+                block.feedhorn_height,
+            )
+        })
     }
 
     /// Maps this message into a common model radial.
