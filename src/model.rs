@@ -1,3 +1,8 @@
+//!
+//! Decoder for NEXRAD Archive II data structures as defined by NOAA's WSR-88D Interface Control
+//! Document ICD 2620010H build 19.0 into the `nexrad-model` common model.
+//!
+
 use crate::raw::messages::digital_radar_data::GenericDataBlock;
 use crate::result::Result;
 use nexrad_model::data::{MomentData, Radial, RadialStatus};
