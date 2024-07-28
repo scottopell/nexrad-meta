@@ -11,6 +11,8 @@ use uom::si::f64::{Information, Length};
 use uom::si::information::byte;
 #[cfg(feature = "uom")]
 use uom::si::length::kilometer;
+#[cfg(feature = "nexrad-model")]
+use nexrad_model::data::MomentData;
 
 /// A generic data moment block.
 pub struct GenericDataBlock {
@@ -60,6 +62,16 @@ impl GenericDataBlock {
                 }
             })
             .collect()
+    }
+
+    /// Maps this generic data block into the common moment data model.
+    #[cfg(feature = "nexrad-model")]
+    pub fn moment_data(&self) -> MomentData {
+        MomentData::from_fixed_point(
+            self.header.scale,
+            self.header.offset,
+            self.encoded_data.clone(),
+        )
     }
 }
 

@@ -2,6 +2,9 @@ use crate::raw::messages::digital_radar_data::{
     ElevationDataBlock, GenericDataBlock, Header, RadialDataBlock, VolumeDataBlock,
 };
 
+#[cfg(feature = "nexrad-model")]
+use nexrad_model::data::{Radial, RadialStatus};
+
 /// The digital radar data message includes base radar data from a single radial for various
 /// products.
 #[derive(Debug)]
@@ -40,6 +43,8 @@ pub struct Message {
     pub specific_diff_phase_data_block: Option<GenericDataBlock>,
 }
 
+const MILLIS_PER_DAY: i64 = 86_400_000;
+
 impl Message {
     /// Create a new digital radar data message with the decoded header.
     pub(crate) fn new(header: Header) -> Self {
@@ -56,5 +61,35 @@ impl Message {
             correlation_coefficient_data_block: None,
             specific_diff_phase_data_block: None,
         }
+    }
+
+    /// Maps this message into a common model radial.
+    #[cfg(feature = "nexrad-model")]
+    pub fn radial(&self) -> Radial {
+        Radial::new(
+            self.header.date as i64 * MILLIS_PER_DAY + self.header.time as i64,
+            self.header.azimuth_number,
+            self.header.azimuth_angle,
+            match self.header.azimuth_resolution_spacing {
+                1 => 0.5,
+                _ => 1.0,
+            },
+            match self.header.radial_status {
+                0 => RadialStatus::ElevationStart,
+                1 => RadialStatus::IntermediateRadialData,
+                2 => RadialStatus::ElevationEnd,
+                3 => RadialStatus::VolumeScanStart,
+                4 => RadialStatus::VolumeScanEnd,
+                _ => RadialStatus::ElevationStartVCPFinal,
+            },
+            self.header.elevation_angle,
+            self.reflectivity_data_block.as_ref().map(|block| block.moment_data()),
+            self.velocity_data_block.as_ref().map(|block| block.moment_data()),
+            self.spectrum_width_data_block.as_ref().map(|block| block.moment_data()),
+            self.differential_reflectivity_data_block.as_ref().map(|block| block.moment_data()),
+            self.differential_phase_data_block.as_ref().map(|block| block.moment_data()),
+            self.correlation_coefficient_data_block.as_ref().map(|block| block.moment_data()),
+            self.specific_diff_phase_data_block.as_ref().map(|block| block.moment_data()),
+        )
     }
 }
