@@ -1,4 +1,17 @@
+//!
+//! # nexrad-decode
+//! Decoding functions and models for NEXRAD weather radar data. Decoder and struct definitions are
+//! in accordance with NOAA's WSR-88D Interface Control Document for Archive II "ICD 2620010H".
+//!
+//! Optionally, the `nexrad-model` feature provides mappings to a common model for representing
+//! radar data. The `uom` feature can also be used to provide type-safe units of measure.
+//!
+
+#![forbid(unsafe_code)]
+#![warn(clippy::correctness)]
+#![allow(clippy::too_many_arguments)]
+
+pub mod raw;
 #[cfg(feature = "nexrad-model")]
 pub mod model;
-pub mod raw;
 pub mod result;
