@@ -1,14 +1,14 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+use thiserror::Error as ThisError;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub mod message {
+    use std::io::Read;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    pub fn digital_radar_data<R: Read>(_reader: &mut R) -> crate::Result<nexrad_model::data::Radial> {
+        todo!()
     }
 }
+
+pub type Result<T> = std::result::Result<T, Error>;
+
+#[derive(ThisError, Debug)]
+pub enum Error {}
