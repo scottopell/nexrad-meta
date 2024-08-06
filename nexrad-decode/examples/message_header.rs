@@ -7,12 +7,12 @@
 //!
 
 use nexrad_decode::messages::decode_message_header;
-use std::fs;
+
+const MESSAGE_HEADER: &[u8] = include_bytes!("data/message_header");
 
 fn main() {
-    let file = fs::read("examples/data/message_header").expect("file exists");
-    let mut reader = std::io::Cursor::new(file.as_slice());
+    let mut reader = std::io::Cursor::new(MESSAGE_HEADER);
 
-    let message_header = decode_message_header(&mut reader).unwrap();
-    println!("Decoded message header: {:?}", message_header);
+    let decoded_msg_header = decode_message_header(&mut reader).unwrap();
+    println!("Decoded message header: {:?}", decoded_msg_header);
 }

@@ -1769,6 +1769,7 @@ version = "0.1.0"
 dependencies = [
  "bincode",
  "chrono",
+ "clap",
  "nexrad-model",
  "serde",
  "thiserror",
