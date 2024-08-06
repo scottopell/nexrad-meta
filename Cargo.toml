@@ -4,7 +4,6 @@ members = [
     "nexrad-model",
     "nexrad-decode",
     "nexrad-data",
-    "nexrad-volumetric-renderer",
 ]
 
 [workspace.dependencies]
