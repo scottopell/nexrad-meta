@@ -3,7 +3,8 @@ resolver = "2"
 members = [
     "nexrad-model",
     "nexrad-decode",
-    "nexrad-data"
+    "nexrad-data",
+    "nexrad-volumetric-renderer",
 ]
 
 [workspace.dependencies]
