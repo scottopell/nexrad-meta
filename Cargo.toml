@@ -5,15 +5,16 @@ members = [
     "nexrad-decode",
     "nexrad-data",
     "nexrad-volumetric-renderer",
+    "nexrad-utils",
 ]
 
 [workspace.dependencies]
 clap = { version = "4.5", features = ["derive"] }
-chrono = {version="0.4"}
-uom = {version="0.36"}
-serde = {version="1.0", features=["derive"]}
+chrono = { version="0.4" }
+uom = { version="0.36" }
+serde = { version="1.0", features=["derive"] }
 thiserror = "1.0"
 bincode = "1.3"
-reqwest = {version="0.12"}
-xml = {version="0.8"}
-bzip2 = {version="0.4"}
+reqwest = { version="0.12", features = ["json"] }
+xml = { version="0.8" }
+bzip2 = { version="0.4" }
